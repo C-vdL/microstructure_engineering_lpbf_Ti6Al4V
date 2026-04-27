@@ -1,0 +1,384 @@
+from part import *
+from material import *
+from section import *
+from assembly import *
+from step import *
+from interaction import *
+from load import *
+from mesh import *
+from optimization import *
+from job import *
+from sketch import *
+from visualization import *
+from connectorBehavior import *
+# mdb.models['Model-ST'].EventSeriesType(createStepName='Initial', fieldNums=1,
+#     fields=('On/Off State', ), name='ABQ_AM_MaterialDeposition')
+# mdb.models['Model-HT'].EventSeriesType(createStepName='Initial', fieldNums=1,
+#     fields=('On/Off State', ), name='ABQ_AM_MaterialDeposition')
+# mdb.models['Model-HT'].EventSeriesType(createStepName='Initial', fieldNums=1,
+#     fields=('Power Magnitude (unit of JT^-1)', ), name='ABQ_AM_PowerMagnitude')
+# mdb.models['Model-HT'].EventSeriesType(createStepName='Initial', fieldNums=1,
+#     fields=('Rule ID', ), name='ABQ_AM_HeatSourceTrajectory_RuleID')
+# mdb.models['Model-HT'].EventSeriesData(createStepName='Initial', data=((11.0,
+#     4.5, 5.0, 0.03, 45000.0), (11.01, 5.5, 5.0, 0.03, 0.0), (23.0, 4.5, 5.0,
+#     0.06, 45000.0), (23.01, 5.5, 5.0, 0.06, 0.0), (35.0, 4.5, 5.0, 0.09,
+#     45000.0), (35.01, 5.5, 5.0, 0.09, 0.0), (47.0, 4.5, 5.0, 0.12, 45000.0), (
+#     47.01, 5.5, 5.0, 0.12, 0.0), (59.0, 4.5, 5.0, 0.15, 45000.0), (59.01, 5.5,
+#     5.0, 0.15, 0.0), (71.0, 4.5, 5.0, 0.18, 45000.0), (71.01, 5.5, 5.0, 0.18,
+#     0.0), (83.0, 4.5, 5.0, 0.21, 45000.0), (83.01, 5.5, 5.0, 0.21, 0.0), (95.0,
+#     4.5, 5.0, 0.24, 45000.0), (95.01, 5.5, 5.0, 0.24, 0.0), (107.0, 4.5, 5.0,
+#     0.27, 45000.0), (107.01, 5.5, 5.0, 0.27, 0.0), (119.0, 4.5, 5.0, 0.3,
+#     45000.0), (119.01, 5.5, 5.0, 0.3, 0.0)), eventSeriesType=
+#     'ABQ_AM_PowerMagnitude', name='Event series-laser_layer', timeSpan=
+#     STEP_TIME)
+# mdb.models['Model-ST'].EventSeriesData(createStepName='Initial', data=((0.0,
+#     -1.0, 0.0, 0.03, 1.0), (11.0, 11.0, 0.0, 0.03, 0.0), (12.0, -1.0, 0.0,
+#     0.06, 1.0), (23.0, 11.0, 0.0, 0.06, 0.0), (24.0, -1.0, 0.0, 0.09, 1.0), (
+#     35.0, 11.0, 0.0, 0.09, 0.0), (36.0, -1.0, 0.0, 0.12, 1.0), (47.0, 11.0,
+#     0.0, 0.12, 0.0), (48.0, -1.0, 0.0, 0.15, 1.0), (59.0, 11.0, 0.0, 0.15,
+#     0.0), (60.0, -1.0, 0.0, 0.18, 1.0), (71.0, 11.0, 0.0, 0.18, 0.0), (72.0,
+#     -1.0, 0.0, 0.21, 1.0), (83.0, 11.0, 0.0, 0.21, 0.0), (84.0, -1.0, 0.0,
+#     0.24, 1.0), (95.0, 11.0, 0.0, 0.24, 0.0), (96.0, -1.0, 0.0, 0.27, 1.0), (
+#     107.0, 11.0, 0.0, 0.27, 0.0), (108.0, -1.0, 0.0, 0.3, 1.0), (119.0, 11.0,
+#     0.0, 0.3, 0.0)), eventSeriesType='ABQ_AM_MaterialDeposition', name=
+#     'Event series-roller', timeSpan=STEP_TIME)
+# mdb.models['Model-HT'].EventSeriesData(createStepName='Initial', data=((0.0,
+#     -1.0, 0.0, 0.03, 1.0), (11.0, 11.0, 0.0, 0.03, 0.0), (12.0, -1.0, 0.0,
+#     0.06, 1.0), (23.0, 11.0, 0.0, 0.06, 0.0), (24.0, -1.0, 0.0, 0.09, 1.0), (
+#     35.0, 11.0, 0.0, 0.09, 0.0), (36.0, -1.0, 0.0, 0.12, 1.0), (47.0, 11.0,
+#     0.0, 0.12, 0.0), (48.0, -1.0, 0.0, 0.15, 1.0), (59.0, 11.0, 0.0, 0.15,
+#     0.0), (60.0, -1.0, 0.0, 0.18, 1.0), (71.0, 11.0, 0.0, 0.18, 0.0), (72.0,
+#     -1.0, 0.0, 0.21, 1.0), (83.0, 11.0, 0.0, 0.21, 0.0), (84.0, -1.0, 0.0,
+#     0.24, 1.0), (95.0, 11.0, 0.0, 0.24, 0.0), (96.0, -1.0, 0.0, 0.27, 1.0), (
+#     107.0, 11.0, 0.0, 0.27, 0.0), (108.0, -1.0, 0.0, 0.3, 1.0), (119.0, 11.0,
+#     0.0, 0.3, 0.0)), eventSeriesType='ABQ_AM_MaterialDeposition', name=
+#     'Event series-roller', timeSpan=STEP_TIME)
+# mdb.models['Model-ST'].TableCollection(name='ABQ_AM.Material Input')
+# mdb.models['Model-HT'].TableCollection(name='ABQ_AM.Material Input')
+# mdb.models['Model-ST'].tableCollections['ABQ_AM.Material Input'].ParameterTable(
+#     name='ABQ_AM_MaterialDeposition')
+# mdb.models['Model-HT'].tableCollections['ABQ_AM.Material Input'].ParameterTable(
+#     name='ABQ_AM_MaterialDeposition')
+# mdb.models['Model-ST'].tableCollections['ABQ_AM.Material Input'].parameterTables['ABQ_AM_MaterialDeposition'].Column(
+#     description='Event series', type=STRING)
+# mdb.models['Model-HT'].tableCollections['ABQ_AM.Material Input'].parameterTables['ABQ_AM_MaterialDeposition'].Column(
+#     description='Event series', type=STRING)
+# mdb.models['Model-ST'].tableCollections['ABQ_AM.Material Input'].parameterTables['ABQ_AM_MaterialDeposition'].Column(
+#     allowedValues=('Roller', 'Bead'), description='Deposition process', type=
+#     STRING)
+# mdb.models['Model-HT'].tableCollections['ABQ_AM.Material Input'].parameterTables['ABQ_AM_MaterialDeposition'].Column(
+#     allowedValues=('Roller', 'Bead'), description='Deposition process', type=
+#     STRING)
+# mdb.models['Model-ST'].tableCollections['ABQ_AM.Material Input'].parameterTables['ABQ_AM_MaterialDeposition'].DataTable(
+#     label='ABQ_AM_MaterialDeposition')
+# mdb.models['Model-HT'].tableCollections['ABQ_AM.Material Input'].parameterTables['ABQ_AM_MaterialDeposition'].DataTable(
+#     label='ABQ_AM_MaterialDeposition')
+# mdb.models['Model-ST'].tableCollections['ABQ_AM.Material Input'].parameterTables['ABQ_AM_MaterialDeposition'].dataTables[0].Column(
+#     data=('Event series-roller', ), id=0)
+# mdb.models['Model-HT'].tableCollections['ABQ_AM.Material Input'].parameterTables['ABQ_AM_MaterialDeposition'].dataTables[0].Column(
+#     data=('Event series-roller', ), id=0)
+# mdb.models['Model-ST'].tableCollections['ABQ_AM.Material Input'].parameterTables['ABQ_AM_MaterialDeposition'].dataTables[0].Column(
+#     data=('Roller', ), id=1)
+# mdb.models['Model-HT'].tableCollections['ABQ_AM.Material Input'].parameterTables['ABQ_AM_MaterialDeposition'].dataTables[0].Column(
+#     data=('Roller', ), id=1)
+# mdb.models['Model-ST'].tableCollections['ABQ_AM.Material Input'].ParameterTable(
+#     name='ABQ_AM_MaterialDeposition_Advanced')
+# mdb.models['Model-HT'].tableCollections['ABQ_AM.Material Input'].ParameterTable(
+#     name='ABQ_AM_MaterialDeposition_Advanced')
+# mdb.models['Model-ST'].tableCollections['ABQ_AM.Material Input'].parameterTables['ABQ_AM_MaterialDeposition_Advanced'].Column(
+#     allowedValues=('Full', 'Partial'), default='Partial', description=
+#     'Activation type', type=STRING)
+# mdb.models['Model-HT'].tableCollections['ABQ_AM.Material Input'].parameterTables['ABQ_AM_MaterialDeposition_Advanced'].Column(
+#     allowedValues=('Full', 'Partial'), default='Partial', description=
+#     'Activation type', type=STRING)
+# mdb.models['Model-ST'].tableCollections['ABQ_AM.Material Input'].parameterTables['ABQ_AM_MaterialDeposition_Advanced'].Column(
+#     default=0.0, description=
+#     'Min volume fraction threshold for partial activation', type=FLOAT)
+# mdb.models['Model-HT'].tableCollections['ABQ_AM.Material Input'].parameterTables['ABQ_AM_MaterialDeposition_Advanced'].Column(
+#     default=0.0, description=
+#     'Min volume fraction threshold for partial activation', type=FLOAT)
+# mdb.models['Model-ST'].tableCollections['ABQ_AM.Material Input'].parameterTables['ABQ_AM_MaterialDeposition_Advanced'].Column(
+#     default=0.0, description=
+#     'Max volume fraction threshold for partial activation', type=FLOAT)
+# mdb.models['Model-HT'].tableCollections['ABQ_AM.Material Input'].parameterTables['ABQ_AM_MaterialDeposition_Advanced'].Column(
+#     default=0.0, description=
+#     'Max volume fraction threshold for partial activation', type=FLOAT)
+# mdb.models['Model-ST'].tableCollections['ABQ_AM.Material Input'].parameterTables['ABQ_AM_MaterialDeposition_Advanced'].Column(
+#     default=0.0, description=
+#     'Max volume fraction threshold for full activation', type=FLOAT)
+# mdb.models['Model-HT'].tableCollections['ABQ_AM.Material Input'].parameterTables['ABQ_AM_MaterialDeposition_Advanced'].Column(
+#     default=0.0, description=
+#     'Max volume fraction threshold for full activation', type=FLOAT)
+# mdb.models['Model-ST'].tableCollections['ABQ_AM.Material Input'].parameterTables['ABQ_AM_MaterialDeposition_Advanced'].Column(
+#     default='Yes', description='Orientation for bead type deposition', type=
+#     STRING)
+# mdb.models['Model-HT'].tableCollections['ABQ_AM.Material Input'].parameterTables['ABQ_AM_MaterialDeposition_Advanced'].Column(
+#     default='Yes', description='Orientation for bead type deposition', type=
+#     STRING)
+# mdb.models['Model-ST'].tableCollections['ABQ_AM.Material Input'].parameterTables['ABQ_AM_MaterialDeposition_Advanced'].Column(
+#     default=0, description='Element subdivision order', type=INTEGER)
+# mdb.models['Model-HT'].tableCollections['ABQ_AM.Material Input'].parameterTables['ABQ_AM_MaterialDeposition_Advanced'].Column(
+#     default=0, description='Element subdivision order', type=INTEGER)
+# mdb.models['Model-ST'].tableCollections['ABQ_AM.Material Input'].parameterTables['ABQ_AM_MaterialDeposition_Advanced'].DataTable(
+#     label='ABQ_AM_MaterialDeposition_Advanced')
+# mdb.models['Model-HT'].tableCollections['ABQ_AM.Material Input'].parameterTables['ABQ_AM_MaterialDeposition_Advanced'].DataTable(
+#     label='ABQ_AM_MaterialDeposition_Advanced')
+# mdb.models['Model-ST'].tableCollections['ABQ_AM.Material Input'].parameterTables['ABQ_AM_MaterialDeposition_Advanced'].dataTables[0].Column(
+#     data=('Full', ), id=0)
+# mdb.models['Model-HT'].tableCollections['ABQ_AM.Material Input'].parameterTables['ABQ_AM_MaterialDeposition_Advanced'].dataTables[0].Column(
+#     data=('Full', ), id=0)
+# mdb.models['Model-ST'].tableCollections['ABQ_AM.Material Input'].parameterTables['ABQ_AM_MaterialDeposition_Advanced'].dataTables[0].Column(
+#     data=(0.0, ), id=1)
+# mdb.models['Model-HT'].tableCollections['ABQ_AM.Material Input'].parameterTables['ABQ_AM_MaterialDeposition_Advanced'].dataTables[0].Column(
+#     data=(0.0, ), id=1)
+# mdb.models['Model-ST'].tableCollections['ABQ_AM.Material Input'].parameterTables['ABQ_AM_MaterialDeposition_Advanced'].dataTables[0].Column(
+#     data=(0.0, ), id=2)
+# mdb.models['Model-HT'].tableCollections['ABQ_AM.Material Input'].parameterTables['ABQ_AM_MaterialDeposition_Advanced'].dataTables[0].Column(
+#     data=(0.0, ), id=2)
+# mdb.models['Model-ST'].tableCollections['ABQ_AM.Material Input'].parameterTables['ABQ_AM_MaterialDeposition_Advanced'].dataTables[0].Column(
+#     data=(0.9, ), id=3)
+# mdb.models['Model-HT'].tableCollections['ABQ_AM.Material Input'].parameterTables['ABQ_AM_MaterialDeposition_Advanced'].dataTables[0].Column(
+#     data=(0.9, ), id=3)
+# mdb.models['Model-ST'].tableCollections['ABQ_AM.Material Input'].parameterTables['ABQ_AM_MaterialDeposition_Advanced'].dataTables[0].Column(
+#     data=('Yes', ), id=4)
+# mdb.models['Model-HT'].tableCollections['ABQ_AM.Material Input'].parameterTables['ABQ_AM_MaterialDeposition_Advanced'].dataTables[0].Column(
+#     data=('Yes', ), id=4)
+# mdb.models['Model-ST'].tableCollections['ABQ_AM.Material Input'].parameterTables['ABQ_AM_MaterialDeposition_Advanced'].dataTables[0].Column(
+#     data=(0, ), id=5)
+# mdb.models['Model-HT'].tableCollections['ABQ_AM.Material Input'].parameterTables['ABQ_AM_MaterialDeposition_Advanced'].dataTables[0].Column(
+#     data=(0, ), id=5)
+# mdb.models['Model-ST'].tableCollections['ABQ_AM.Material Input'].ParameterTable(
+#     name='ABQ_AM_MaterialDeposition_Bead')
+# mdb.models['Model-HT'].tableCollections['ABQ_AM.Material Input'].ParameterTable(
+#     name='ABQ_AM_MaterialDeposition_Bead')
+# mdb.models['Model-ST'].tableCollections['ABQ_AM.Material Input'].parameterTables['ABQ_AM_MaterialDeposition_Bead'].Column(
+#     allowedValues=('X', 'Y', 'Z'), description='Stack direction', type=STRING)
+# mdb.models['Model-HT'].tableCollections['ABQ_AM.Material Input'].parameterTables['ABQ_AM_MaterialDeposition_Bead'].Column(
+#     allowedValues=('X', 'Y', 'Z'), description='Stack direction', type=STRING)
+# mdb.models['Model-ST'].tableCollections['ABQ_AM.Material Input'].parameterTables['ABQ_AM_MaterialDeposition_Bead'].Column(
+#     default=0.0, description='Bead height', type=FLOAT)
+# mdb.models['Model-HT'].tableCollections['ABQ_AM.Material Input'].parameterTables['ABQ_AM_MaterialDeposition_Bead'].Column(
+#     default=0.0, description='Bead height', type=FLOAT)
+# mdb.models['Model-ST'].tableCollections['ABQ_AM.Material Input'].parameterTables['ABQ_AM_MaterialDeposition_Bead'].Column(
+#     default=0.0, description='Bead width', type=FLOAT)
+# mdb.models['Model-HT'].tableCollections['ABQ_AM.Material Input'].parameterTables['ABQ_AM_MaterialDeposition_Bead'].Column(
+#     default=0.0, description='Bead width', type=FLOAT)
+# mdb.models['Model-ST'].tableCollections['ABQ_AM.Material Input'].parameterTables['ABQ_AM_MaterialDeposition_Bead'].Column(
+#     default=0.0, description='Activation offset', type=FLOAT)
+# mdb.models['Model-HT'].tableCollections['ABQ_AM.Material Input'].parameterTables['ABQ_AM_MaterialDeposition_Bead'].Column(
+#     default=0.0, description='Activation offset', type=FLOAT)
+# mdb.models['Model-ST'].tableCollections['ABQ_AM.Material Input'].parameterTables['ABQ_AM_MaterialDeposition_Bead'].Column(
+#     allowedValues=('Below', 'Above'), description='Deposition position', type=
+#     STRING)
+# mdb.models['Model-HT'].tableCollections['ABQ_AM.Material Input'].parameterTables['ABQ_AM_MaterialDeposition_Bead'].Column(
+#     allowedValues=('Below', 'Above'), description='Deposition position', type=
+#     STRING)
+# mdb.models['Model-ST'].tableCollections['ABQ_AM.Material Input'].parameterTables['ABQ_AM_MaterialDeposition_Bead'].DataTable(
+#     label='ABQ_AM_MaterialDeposition_Bead')
+# mdb.models['Model-HT'].tableCollections['ABQ_AM.Material Input'].parameterTables['ABQ_AM_MaterialDeposition_Bead'].DataTable(
+#     label='ABQ_AM_MaterialDeposition_Bead')
+# mdb.models['Model-ST'].tableCollections['ABQ_AM.Material Input'].parameterTables['ABQ_AM_MaterialDeposition_Bead'].dataTables[0].Column(
+#     data=('X', ), id=0)
+# mdb.models['Model-HT'].tableCollections['ABQ_AM.Material Input'].parameterTables['ABQ_AM_MaterialDeposition_Bead'].dataTables[0].Column(
+#     data=('X', ), id=0)
+# mdb.models['Model-ST'].tableCollections['ABQ_AM.Material Input'].parameterTables['ABQ_AM_MaterialDeposition_Bead'].dataTables[0].Column(
+#     data=(0.0, ), id=1)
+# mdb.models['Model-HT'].tableCollections['ABQ_AM.Material Input'].parameterTables['ABQ_AM_MaterialDeposition_Bead'].dataTables[0].Column(
+#     data=(0.0, ), id=1)
+# mdb.models['Model-ST'].tableCollections['ABQ_AM.Material Input'].parameterTables['ABQ_AM_MaterialDeposition_Bead'].dataTables[0].Column(
+#     data=(0.0, ), id=2)
+# mdb.models['Model-HT'].tableCollections['ABQ_AM.Material Input'].parameterTables['ABQ_AM_MaterialDeposition_Bead'].dataTables[0].Column(
+#     data=(0.0, ), id=2)
+# mdb.models['Model-ST'].tableCollections['ABQ_AM.Material Input'].parameterTables['ABQ_AM_MaterialDeposition_Bead'].dataTables[0].Column(
+#     data=(0.0, ), id=3)
+# mdb.models['Model-HT'].tableCollections['ABQ_AM.Material Input'].parameterTables['ABQ_AM_MaterialDeposition_Bead'].dataTables[0].Column(
+#     data=(0.0, ), id=3)
+# mdb.models['Model-ST'].tableCollections['ABQ_AM.Material Input'].parameterTables['ABQ_AM_MaterialDeposition_Bead'].dataTables[0].Column(
+#     data=('Below', ), id=4)
+# mdb.models['Model-HT'].tableCollections['ABQ_AM.Material Input'].parameterTables['ABQ_AM_MaterialDeposition_Bead'].dataTables[0].Column(
+#     data=('Below', ), id=4)
+# mdb.models['Model-HT'].rootAssembly.ElementProgressiveActivation(deformation=0,
+#     elset=mdb.models['Model-HT'].rootAssembly.allSets['Part-lpbf-1.Set-lpbf'],
+#     freeSurfaceType=NONE, name='ElementProgressiveActivation1')
+# mdb.models['Model-ST'].rootAssembly.ElementProgressiveActivation(deformation=0,
+#     elset=mdb.models['Model-ST'].rootAssembly.allSets['Part-lpbf-1.Set-lpbf'],
+#     freeSurfaceType=NONE, name='ElementProgressiveActivation1')
+# mdb.models['Model-HT'].steps['Step-heating'].ActivateElement(activation=
+#     'ElementProgressiveActivation1', expansionTimeConst=2.0, tableCollection=
+#     'ABQ_AM.Material Input')
+# mdb.models['Model-ST'].steps['Step-Activation'].ActivateElement(activation=
+#     'ElementProgressiveActivation1', expansionTimeConst=2.0, tableCollection=
+#     'ABQ_AM.Material Input')
+
+
+# mdb.models['Model-HT'].TableCollection(name='ABQ_AM.Moving Heat Source')
+# mdb.models['Model-HT'].tableCollections['ABQ_AM.Moving Heat Source'].ParameterTable(
+#     name='ABQ_AM_MovingHeatSource')
+# mdb.models['Model-HT'].tableCollections['ABQ_AM.Moving Heat Source'].parameterTables['ABQ_AM_MovingHeatSource'].Column(
+#     description='Event series', type=STRING)
+# mdb.models['Model-HT'].tableCollections['ABQ_AM.Moving Heat Source'].parameterTables['ABQ_AM_MovingHeatSource'].Column(
+#     allowedValues=('Concentrated', 'Uniform', 'Goldak'), description=
+#     'Energy distribution', type=STRING)
+# mdb.models['Model-HT'].tableCollections['ABQ_AM.Moving Heat Source'].parameterTables['ABQ_AM_MovingHeatSource'].DataTable(
+#     label='ABQ_AM_MovingHeatSource')
+# mdb.models['Model-HT'].tableCollections['ABQ_AM.Moving Heat Source'].parameterTables['ABQ_AM_MovingHeatSource'].dataTables[0].Column(
+#     data=('Event series-laser_layer', ), id=0)
+# mdb.models['Model-HT'].tableCollections['ABQ_AM.Moving Heat Source'].parameterTables['ABQ_AM_MovingHeatSource'].dataTables[0].Column(
+#     data=('Uniform', ), id=1)
+# mdb.models['Model-HT'].tableCollections['ABQ_AM.Moving Heat Source'].ParameterTable(
+#     name='ABQ_AM_MovingHeatSource_Advanced')
+# mdb.models['Model-HT'].tableCollections['ABQ_AM.Moving Heat Source'].parameterTables['ABQ_AM_MovingHeatSource_Advanced'].Column(
+#     allowedValues=('True', 'False'), default='False', description=
+#     'Enhance energy conservation', type=STRING)
+# mdb.models['Model-HT'].tableCollections['ABQ_AM.Moving Heat Source'].parameterTables['ABQ_AM_MovingHeatSource_Advanced'].Column(
+#     allowedValues=('True', 'False'), default='False', description=
+#     'Control increment size', type=STRING)
+# mdb.models['Model-HT'].tableCollections['ABQ_AM.Moving Heat Source'].parameterTables['ABQ_AM_MovingHeatSource_Advanced'].Column(
+#     allowedValues=('Absolute', 'Relative'), default='Relative', description=
+#     'Offset type', type=STRING)
+# mdb.models['Model-HT'].tableCollections['ABQ_AM.Moving Heat Source'].parameterTables['ABQ_AM_MovingHeatSource_Advanced'].Column(
+#     default=0.0, description='Vector x', type=FLOAT)
+# mdb.models['Model-HT'].tableCollections['ABQ_AM.Moving Heat Source'].parameterTables['ABQ_AM_MovingHeatSource_Advanced'].Column(
+#     default=0.0, description='Vector y', type=FLOAT)
+# mdb.models['Model-HT'].tableCollections['ABQ_AM.Moving Heat Source'].parameterTables['ABQ_AM_MovingHeatSource_Advanced'].Column(
+#     default=-1.0, description='Vector z', type=FLOAT)
+# mdb.models['Model-HT'].tableCollections['ABQ_AM.Moving Heat Source'].parameterTables['ABQ_AM_MovingHeatSource_Advanced'].Column(
+#     default=1.0, description='Field factor', type=FLOAT)
+# mdb.models['Model-HT'].tableCollections['ABQ_AM.Moving Heat Source'].parameterTables['ABQ_AM_MovingHeatSource_Advanced'].DataTable(
+#     label='ABQ_AM_MovingHeatSource_Advanced')
+# mdb.models['Model-HT'].tableCollections['ABQ_AM.Moving Heat Source'].parameterTables['ABQ_AM_MovingHeatSource_Advanced'].dataTables[0].Column(
+#     data=('False', ), id=0)
+# mdb.models['Model-HT'].tableCollections['ABQ_AM.Moving Heat Source'].parameterTables['ABQ_AM_MovingHeatSource_Advanced'].dataTables[0].Column(
+#     data=('False', ), id=1)
+# mdb.models['Model-HT'].tableCollections['ABQ_AM.Moving Heat Source'].parameterTables['ABQ_AM_MovingHeatSource_Advanced'].dataTables[0].Column(
+#     data=('Relative', ), id=2)
+# mdb.models['Model-HT'].tableCollections['ABQ_AM.Moving Heat Source'].parameterTables['ABQ_AM_MovingHeatSource_Advanced'].dataTables[0].Column(
+#     data=(0.0, ), id=3)
+# mdb.models['Model-HT'].tableCollections['ABQ_AM.Moving Heat Source'].parameterTables['ABQ_AM_MovingHeatSource_Advanced'].dataTables[0].Column(
+#     data=(0.0, ), id=4)
+# mdb.models['Model-HT'].tableCollections['ABQ_AM.Moving Heat Source'].parameterTables['ABQ_AM_MovingHeatSource_Advanced'].dataTables[0].Column(
+#     data=(-1.0, ), id=5)
+# mdb.models['Model-HT'].tableCollections['ABQ_AM.Moving Heat Source'].parameterTables['ABQ_AM_MovingHeatSource_Advanced'].dataTables[0].Column(
+#     data=(1.0, ), id=6)
+# mdb.models['Model-HT'].tableCollections['ABQ_AM.Moving Heat Source'].ParameterTable(
+#     name='ABQ_AM_MovingHeatSource_Uniform')
+# mdb.models['Model-HT'].tableCollections['ABQ_AM.Moving Heat Source'].parameterTables['ABQ_AM_MovingHeatSource_Uniform'].Column(
+#     default=0, description='Subdiv x', type=INTEGER)
+# mdb.models['Model-HT'].tableCollections['ABQ_AM.Moving Heat Source'].parameterTables['ABQ_AM_MovingHeatSource_Uniform'].Column(
+#     default=0, description='Subdiv y', type=INTEGER)
+# mdb.models['Model-HT'].tableCollections['ABQ_AM.Moving Heat Source'].parameterTables['ABQ_AM_MovingHeatSource_Uniform'].Column(
+#     default=0, description='Subdiv z', type=INTEGER)
+# mdb.models['Model-HT'].tableCollections['ABQ_AM.Moving Heat Source'].parameterTables['ABQ_AM_MovingHeatSource_Uniform'].Column(
+#     default=0.0, description='Offset x', type=FLOAT)
+# mdb.models['Model-HT'].tableCollections['ABQ_AM.Moving Heat Source'].parameterTables['ABQ_AM_MovingHeatSource_Uniform'].Column(
+#     default=0.0, description='Offset y', type=FLOAT)
+# mdb.models['Model-HT'].tableCollections['ABQ_AM.Moving Heat Source'].parameterTables['ABQ_AM_MovingHeatSource_Uniform'].Column(
+#     default=0.0, description='Offset z', type=FLOAT)
+# mdb.models['Model-HT'].tableCollections['ABQ_AM.Moving Heat Source'].parameterTables['ABQ_AM_MovingHeatSource_Uniform'].Column(
+#     default=0.0, description='Box length x', type=FLOAT)
+# mdb.models['Model-HT'].tableCollections['ABQ_AM.Moving Heat Source'].parameterTables['ABQ_AM_MovingHeatSource_Uniform'].Column(
+#     default=0.0, description='Box length y', type=FLOAT)
+# mdb.models['Model-HT'].tableCollections['ABQ_AM.Moving Heat Source'].parameterTables['ABQ_AM_MovingHeatSource_Uniform'].Column(
+#     default=0.0, description='Box length z', type=FLOAT)
+# mdb.models['Model-HT'].tableCollections['ABQ_AM.Moving Heat Source'].parameterTables['ABQ_AM_MovingHeatSource_Uniform'].DataTable(
+#     label='ABQ_AM_MovingHeatSource_Uniform')
+# mdb.models['Model-HT'].tableCollections['ABQ_AM.Moving Heat Source'].parameterTables['ABQ_AM_MovingHeatSource_Uniform'].dataTables[0].Column(
+#     data=(0, ), id=0)
+# mdb.models['Model-HT'].tableCollections['ABQ_AM.Moving Heat Source'].parameterTables['ABQ_AM_MovingHeatSource_Uniform'].dataTables[0].Column(
+#     data=(0, ), id=1)
+# mdb.models['Model-HT'].tableCollections['ABQ_AM.Moving Heat Source'].parameterTables['ABQ_AM_MovingHeatSource_Uniform'].dataTables[0].Column(
+#     data=(0, ), id=2)
+# mdb.models['Model-HT'].tableCollections['ABQ_AM.Moving Heat Source'].parameterTables['ABQ_AM_MovingHeatSource_Uniform'].dataTables[0].Column(
+#     data=(0.0, ), id=3)
+# mdb.models['Model-HT'].tableCollections['ABQ_AM.Moving Heat Source'].parameterTables['ABQ_AM_MovingHeatSource_Uniform'].dataTables[0].Column(
+#     data=(0.0, ), id=4)
+# mdb.models['Model-HT'].tableCollections['ABQ_AM.Moving Heat Source'].parameterTables['ABQ_AM_MovingHeatSource_Uniform'].dataTables[0].Column(
+#     data=(0.0, ), id=5)
+# mdb.models['Model-HT'].tableCollections['ABQ_AM.Moving Heat Source'].parameterTables['ABQ_AM_MovingHeatSource_Uniform'].dataTables[0].Column(
+#     data=(15.0, ), id=6)
+# mdb.models['Model-HT'].tableCollections['ABQ_AM.Moving Heat Source'].parameterTables['ABQ_AM_MovingHeatSource_Uniform'].dataTables[0].Column(
+#     data=(15.0, ), id=7)
+# mdb.models['Model-HT'].tableCollections['ABQ_AM.Moving Heat Source'].parameterTables['ABQ_AM_MovingHeatSource_Uniform'].dataTables[0].Column(
+#     data=(0.03, ), id=8)
+# mdb.models['Model-HT'].tableCollections['ABQ_AM.Moving Heat Source'].ParameterTable(
+#     name='ABQ_AM_MovingHeatSource_Goldak')
+# mdb.models['Model-HT'].tableCollections['ABQ_AM.Moving Heat Source'].parameterTables['ABQ_AM_MovingHeatSource_Goldak'].Column(
+#     default=0, description='Subdiv x', type=INTEGER)
+# mdb.models['Model-HT'].tableCollections['ABQ_AM.Moving Heat Source'].parameterTables['ABQ_AM_MovingHeatSource_Goldak'].Column(
+#     default=0, description='Subdiv y', type=INTEGER)
+# mdb.models['Model-HT'].tableCollections['ABQ_AM.Moving Heat Source'].parameterTables['ABQ_AM_MovingHeatSource_Goldak'].Column(
+#     default=0, description='Subdiv z', type=INTEGER)
+# mdb.models['Model-HT'].tableCollections['ABQ_AM.Moving Heat Source'].parameterTables['ABQ_AM_MovingHeatSource_Goldak'].Column(
+#     default=0.0, description='a', type=FLOAT)
+# mdb.models['Model-HT'].tableCollections['ABQ_AM.Moving Heat Source'].parameterTables['ABQ_AM_MovingHeatSource_Goldak'].Column(
+#     default=0.0, description='b', type=FLOAT)
+# mdb.models['Model-HT'].tableCollections['ABQ_AM.Moving Heat Source'].parameterTables['ABQ_AM_MovingHeatSource_Goldak'].Column(
+#     default=0.0, description='cf', type=FLOAT)
+# mdb.models['Model-HT'].tableCollections['ABQ_AM.Moving Heat Source'].parameterTables['ABQ_AM_MovingHeatSource_Goldak'].Column(
+#     default=0.0, description='cr', type=FLOAT)
+# mdb.models['Model-HT'].tableCollections['ABQ_AM.Moving Heat Source'].parameterTables['ABQ_AM_MovingHeatSource_Goldak'].Column(
+#     default=0.0, description='ff', type=FLOAT)
+# mdb.models['Model-HT'].tableCollections['ABQ_AM.Moving Heat Source'].parameterTables['ABQ_AM_MovingHeatSource_Goldak'].Column(
+#     default=0.0, description='fr', type=FLOAT)
+# mdb.models['Model-HT'].tableCollections['ABQ_AM.Moving Heat Source'].parameterTables['ABQ_AM_MovingHeatSource_Goldak'].Column(
+#     default=0.0, description='Box size factor', type=FLOAT)
+# mdb.models['Model-HT'].tableCollections['ABQ_AM.Moving Heat Source'].parameterTables['ABQ_AM_MovingHeatSource_Goldak'].DataTable(
+#     label='ABQ_AM_MovingHeatSource_Goldak')
+# mdb.models['Model-HT'].tableCollections['ABQ_AM.Moving Heat Source'].parameterTables['ABQ_AM_MovingHeatSource_Goldak'].dataTables[0].Column(
+#     data=(0, ), id=0)
+# mdb.models['Model-HT'].tableCollections['ABQ_AM.Moving Heat Source'].parameterTables['ABQ_AM_MovingHeatSource_Goldak'].dataTables[0].Column(
+#     data=(0, ), id=1)
+# mdb.models['Model-HT'].tableCollections['ABQ_AM.Moving Heat Source'].parameterTables['ABQ_AM_MovingHeatSource_Goldak'].dataTables[0].Column(
+#     data=(0, ), id=2)
+# mdb.models['Model-HT'].tableCollections['ABQ_AM.Moving Heat Source'].parameterTables['ABQ_AM_MovingHeatSource_Goldak'].dataTables[0].Column(
+#     data=(0.0, ), id=3)
+# mdb.models['Model-HT'].tableCollections['ABQ_AM.Moving Heat Source'].parameterTables['ABQ_AM_MovingHeatSource_Goldak'].dataTables[0].Column(
+#     data=(0.0, ), id=4)
+# mdb.models['Model-HT'].tableCollections['ABQ_AM.Moving Heat Source'].parameterTables['ABQ_AM_MovingHeatSource_Goldak'].dataTables[0].Column(
+#     data=(0.0, ), id=5)
+# mdb.models['Model-HT'].tableCollections['ABQ_AM.Moving Heat Source'].parameterTables['ABQ_AM_MovingHeatSource_Goldak'].dataTables[0].Column(
+#     data=(0.0, ), id=6)
+# mdb.models['Model-HT'].tableCollections['ABQ_AM.Moving Heat Source'].parameterTables['ABQ_AM_MovingHeatSource_Goldak'].dataTables[0].Column(
+#     data=(0.0, ), id=7)
+# mdb.models['Model-HT'].tableCollections['ABQ_AM.Moving Heat Source'].parameterTables['ABQ_AM_MovingHeatSource_Goldak'].dataTables[0].Column(
+#     data=(0.0, ), id=8)
+# mdb.models['Model-HT'].tableCollections['ABQ_AM.Moving Heat Source'].parameterTables['ABQ_AM_MovingHeatSource_Goldak'].dataTables[0].Column(
+#     data=(0.0, ), id=9)
+# mdb.models['Model-HT'].BodyHeatFlux(createStepName='Step-heating',
+#     distributionType=USER_DEFINED, name='Load-1', region=
+#     mdb.models['Model-HT'].rootAssembly.allSets['Part-lpbf-1.Set-lpbf'],
+#     tableCollectionName='ABQ_AM.Moving Heat Source')
+# mdb.models['Model-HT'].tableCollections['ABQ_AM.Moving Heat Source'].PropertyTable(
+#     name='ABQ_AM_AbsorptionCoeff', properties=('Absorption Coefficient', ))
+# mdb.models['Model-HT'].tableCollections['ABQ_AM.Moving Heat Source'].propertyTables['ABQ_AM_AbsorptionCoeff'].PropertyTableData(
+#     data=((0.5, ), ), label='ABQ_AM_AbsorptionCoeff')
+mdb.models['Model-HT'].TimePoint(name='TimePoints-3phases', points=((0.0, 11.0,
+    1.0), (11.0, 11.01, 0.001), (11.01, 13.0, 0.1), (13.0, 23.0, 1.0), (23.0,
+    23.01, 0.001), (23.01, 25.0, 0.1), (25.0, 35.0, 1.0), (35.0, 35.01, 0.001),
+    (35.01, 37.0, 0.1), (37.0, 47.0, 1.0), (47.0, 47.01, 0.001), (47.01, 49.0,
+    0.1), (49.0, 59.0, 1.0), (59.0, 59.01, 0.001), (59.01, 61.0, 0.1), (61.0,
+    71.0, 1.0), (71.0, 71.01, 0.001), (71.01, 73.0, 0.1), (73.0, 83.0, 1.0), (
+    83.0, 83.01, 0.001), (83.01, 85.0, 0.1), (85.0, 95.0, 1.0), (95.0, 95.01,
+    0.001), (95.01, 97.0, 0.1), (97.0, 107.0, 1.0), (107.0, 107.01, 0.001), (
+    107.01, 109.0, 0.1), (109.0, 119.0, 1.0), (119.0, 119.01, 0.001), (119.01,
+    120.0, 0.1)))
+mdb.models['Model-HT'].fieldOutputRequests['F-Output-1'].setValues(timePoint=
+    'TimePoints-3phases')
+# Save by cvander on 2025_05_01-18.01.02; build 2023 2022_09_28-20.11.55 183150
+mdb.models['Model-HT'].RadiationToAmbient(ambientTemperature=25.0,
+    ambientTemperatureAmp='', createStepName='Step-heating', distributionType=
+    UNIFORM, dynamicSurfaceActivation=True, emissivity=0.5, name='Int-Rad',
+    radiationType=AMBIENT, region=
+    mdb.models['Model-HT'].rootAssembly.allSets['Set-all'])
+mdb.models['Model-HT'].FilmCondition(createStepName='Step-heating', definition=
+    EMBEDDED_COEFF, dynamicSurfaceActivation=True, filmCoeff=1.5e-05,
+    filmCoeffAmplitude='', name='Int-Conv', region=
+    mdb.models['Model-HT'].rootAssembly.allSets['Set-all'], sinkAmplitude='',
+    sinkDistributionType=UNIFORM, sinkTemperature=25.0)
+mdb.jobs.changeKey(fromName='Job-HT_v01', toName='Job-HT_Cmodel_v01')
+
+mdb.models['Model-HT'].rootAssembly.Set(cells=
+    mdb.models['Model-HT'].rootAssembly.instances['Part-substrate-1'].cells.getSequenceFromMask(
+    mask=('[#f ]', ), )+\
+    mdb.models['Model-HT'].rootAssembly.instances['Part-lpbf-1'].cells.getSequenceFromMask(
+    mask=('[#1 ]', ), ), name='Set-all')
