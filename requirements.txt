@@ -1,0 +1,10 @@
+numpy
+pandas
+matplotlib
+scipy
+torch
+plotly
+seaborn
+plotly-gif
+gitpython
+PyQt5
